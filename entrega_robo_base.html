@@ -96,7 +96,8 @@
          * Tema 1 deve focar aqui para adicionar novos locais.
          * ==========================================
          */
-        
+        // Array com todas as estradas do vilarejo no formato "Local1-Local2"
+        // Define a conectividade entre os locais
         const roads = [
             "Alice's House-Bob's House", "Alice's House-Cabin",
             "Alice's House-Post Office", "Bob's House-Town Hall",
@@ -108,6 +109,8 @@
         ];
 
         // Coordenadas visuais para desenhar no Canvas (X, Y)
+        // Mapeia cada local para coordenadas (x,y) no canvas
+        // Usado para posicionamento visual dos elementos
         const locations = {
             "Alice's House": {x: 50, y: 100},
             "Bob's House":   {x: 200, y: 50},
@@ -123,8 +126,13 @@
         };
 
         function buildGraph(edges) {
+            // Constrói um grafo de conexões a partir do array de estradas
+            // Entrada: array de strings no formato "Local1-Local2"
+            // Saída: objeto onde cada local tem um array de locais conectados
+
             let graph = Object.create(null);
             function addEdge(from, to) {
+                // Adiciona uma conexão bidirecional ao grafo
                 if (graph[from] == null) {
                     graph[from] = [to];
                 } else {
@@ -133,12 +141,12 @@
             }
             for (let [from, to] of edges.map(r => r.split("-"))) {
                 addEdge(from, to);
-                addEdge(to, from);
+                addEdge(to, from); // Torna o grafo bidirecional
             }
             return graph;
         }
 
-        const roadGraph = buildGraph(roads);
+        const roadGraph = buildGraph(roads); // Constróio o Grafo de conectividade (estradas)
 
         /**
          * ==========================================
@@ -148,36 +156,42 @@
          */
 
         class VillageState {
+            // Representa o estado atual da simulação
             constructor(place, parcels) {
-                this.place = place;
-                this.parcels = parcels;
+                this.place = place;    // Local atual do robô
+                this.parcels = parcels; // Array de encomendas pendentes
             }
 
             move(destination) {
+                // Move o robô para um novo local e atualiza o estado das encomendas
+                // Retorna novo estado (imutabilidade) ou estado atual se movimento inválido
                 if (!roadGraph[this.place].includes(destination)) {
-                    return this; // Movimento inválido, retorna o mesmo estado
+                    return this; // Movimento inválido
                 } else {
                     let parcels = this.parcels.map(p => {
                         if (p.place != this.place) return p;
-                        return {place: destination, address: p.address};
-                    }).filter(p => p.place != p.address);
+                        return {place: destination, address: p.address}; // Move encomendas com o robô
+                    }).filter(p => p.place != p.address); // Remove encomendas entregues
                     return new VillageState(destination, parcels);
                 }
             }
         }
 
+        
+        // Método estático para gerar estado inicial aleatório
         // Gera um estado aleatório com 5 encomendas
         VillageState.random = function(parcelCount = 5) {
+            // Gera estado inicial com número especificado de encomendas
             let parcels = [];
             for (let i = 0; i < parcelCount; i++) {
-                let address = randomPick(Object.keys(roadGraph));
+                let address = randomPick(Object.keys(roadGraph)); // Destino aleatório
                 let place;
                 do {
-                    place = randomPick(Object.keys(roadGraph));
-                } while (place == address);
+                    place = randomPick(Object.keys(roadGraph)); // Origem aleatória
+                } while (place == address); // Garante que origem ≠ destino
                 parcels.push({place, address});
             }
-            return new VillageState("Post Office", parcels);
+            return new VillageState("Post Office", parcels); // Robô começa no correio
         };
 
         /**
@@ -188,16 +202,22 @@
          */
 
         function randomPick(array) {
+            // Seleciona elemento aleatório de um array
             let choice = Math.floor(Math.random() * array.length);
             return array[choice];
         }
 
         // --- ROBÔ 1: ALEATÓRIO (Tema 3) ---
         function randomRobot(state) {
+            // Robô que sempre escolhe direção aleatória
+            // Entrada: estado atual | Saída: {direction, memory}
+
             return {direction: randomPick(roadGraph[state.place])};
         }
 
         // --- ROBÔ 2: ROTA FIXA (Tema 4) ---
+
+        // Rota predefinida que o robô segue ciclicamente
         const mailRoute = [
             "Alice's House", "Cabin", "Alice's House", "Bob's House",
             "Town Hall", "Daria's House", "Ernie's House",
@@ -206,20 +226,26 @@
         ];
 
         function routeRobot(state, memory) {
+            // Robô que segue rota fixa
+            // memory: array com próximos destinos na rota
+
             if (memory.length == 0) {
-                memory = mailRoute;
+                memory = mailRoute; // Reinicia rota se acabou
             }
             return {direction: memory[0], memory: memory.slice(1)};
         }
 
         // --- ROBÔ 3: INTELIGENTE / PATHFINDER (Tema 5 e 6) ---
         function findRoute(graph, from, to) {
-            let work = [{at: from, route: []}];
+            // Algoritmo de busca em largura para encontrar rota mais curta
+            // Entrada: grafo, origem, destino | Saída: array com rota
+
+            let work = [{at: from, route: []}]; // Fila de trabalho
             for (let i = 0; i < work.length; i++) {
                 let {at, route} = work[i];
                 for (let place of graph[at]) {
-                    if (place == to) return route.concat(place);
-                    if (!work.some(w => w.at == place)) {
+                    if (place == to) return route.concat(place); // Rota encontrada
+                    if (!work.some(w => w.at == place)) { // Evita revisitar
                         work.push({at: place, route: route.concat(place)});
                     }
                 }
@@ -227,12 +253,17 @@
         }
 
         function goalOrientedRobot({place, parcels}, route) {
+            // Robô inteligente que busca e entrega encomendas eficientemente
+            // route: memória com rota atual a seguir
+
             if (route.length == 0) {
-                let parcel = parcels[0];
+                let parcel = parcels[0]; // Foca na primeira encomenda
                 // Se a encomenda não está comigo, vou buscar. Se está, vou entregar.
                 if (parcel.place != place) {
+                    // Busca encomenda: calcula rota até local da encomenda
                     route = findRoute(roadGraph, place, parcel.place);
                 } else {
+                    // Entrega encomenda: calcula rota até destino
                     route = findRoute(roadGraph, place, parcel.address);
                 }
             }
@@ -246,18 +277,22 @@
          * ==========================================
          */
 
-        let currentState = null;
-        let currentRobot = null;
-        let robotMemory = [];
-        let turnCount = 0;
-        let simulationTimeout = null;
-        let animationSpeed = 800; // Tema 6: deve tornar isso dinâmico
+        let currentState = null;     // Estado atual do vilarejo
+        let currentRobot = null;     // Função do robô atual
+        let robotMemory = [];        // Memória do robô (para alguns algoritmos)
+        let turnCount = 0;           // Contador de passos
+        let simulationTimeout = null; // Referência do timeout para controle
 
+        // Tema 6: deve tornar isso dinâmico
+        let animationSpeed = 800;    // Velocidade da animação em ms
+
+        // Elementos DOM
         const canvas = document.getElementById('villageCanvas');
         const ctx = canvas.getContext('2d');
         const logContainer = document.getElementById('logContainer');
 
         function init() {
+            // Inicializa a simulação: estado aleatório, desenha vilarejo, atualiza UI
             currentState = VillageState.random();
             drawVillage(currentState);
             updateStatusUI();
@@ -265,21 +300,26 @@
         }
 
         function startSimulation() {
-            if (simulationTimeout) return; // Já está rodando
+            if (simulationTimeout) return; // Evita múltiplas execuções
             
             const robotType = document.getElementById('robotSelect').value;
             
-            // Seleciona o algoritmo
+            // Seleciona o tipo de algoritmo, ou seja, 
+            // configura o algoritmo do robô baseado na seleção do usuário
+
             if (robotType === 'random') currentRobot = randomRobot;
             else if (robotType === 'route') currentRobot = routeRobot;
             else currentRobot = goalOrientedRobot;
 
             robotMemory = []; // Reseta memória do robô
-            runTurn();
+            runTurn(); // Inicia loop principal
         }
 
         function runTurn() {
+            // Executa um turno da simulação (movimento + atualização)
+
             if (currentState.parcels.length == 0) {
+                // Condição de vitória: todas encomendas entregues
                 logAction(`<strong>FIM!</strong> Todas as entregas concluídas em ${turnCount} passos.`);
                 simulationTimeout = null;
                 return;
@@ -312,28 +352,32 @@
         }
 
         function stopSimulation() {
+            // Para a execução da simulação
             clearTimeout(simulationTimeout);
             simulationTimeout = null;
         }
 
         function resetSimulation() {
+            // Reinicia completamente a simulação
             stopSimulation();
             turnCount = 0;
-            logContainer.innerHTML = '';
-            init();
+            logContainer.innerHTML = ''; // Limpa logs
+            init(); // Reinicializa
         }
 
         function updateStatusUI() {
+            // Atualiza contadores na interface
             document.getElementById('stepCount').innerText = turnCount;
             document.getElementById('parcelCount').innerText = currentState.parcels.length;
         }
 
         // Função auxiliar de Log (Tema 2 deve melhorar HTML/CSS aqui)
         function logAction(message) {
+            // Adiciona entrada ao log de ações
             const div = document.createElement('div');
             div.className = 'log-entry';
             div.innerHTML = `Passo ${turnCount}: ${message}`;
-            logContainer.prepend(div);
+            logContainer.prepend(div);  // Adiciona no topo
         }
 
         /**
@@ -343,8 +387,9 @@
          * ==========================================
          */
         function drawVillage(state) {
-            // Limpa o canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Renderiza todo o vilarejo no canvas
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
 
             // 1. Desenhar Estradas (Linhas)
             ctx.strokeStyle = "#aaa";
@@ -382,7 +427,7 @@
             state.parcels.forEach((p, index) => {
                 if(locations[p.place]) {
                     const {x, y} = locations[p.place];
-                    const offset = index * 12; // Empilhamento visual
+                    const offset = index * 12; // Deslocamento para empilhar
                     
                     ctx.fillStyle = "#ef4444"; // Vermelho
                     ctx.fillRect(x + 10 + offset, y + 5, 15, 15);
