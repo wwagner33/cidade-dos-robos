@@ -155,7 +155,7 @@ E para que serve a função `addEdge(from,to)`?
 
 ### Criando a lista de adjacência dos **nós**
 
-A função `addEdge(from,to)` serve para que cada elemento do grafo chamado `graph` possua a lista de seus **vizinhos**, seus **nós adjacentes**. Chamamos esta lista de **lista de adjacência** do **nós**. Por exemplo,
+A função `addEdge(from,to)` serve para que cada elemento do grafo chamado `graph` possua a lista de seus **vizinhos**, seus **nós adjacentes**. Chamamos esta lista de **lista de adjacência** dos **nós**. Por exemplo,
 
 ```javascript
 addEdge(from,to); //Onde from = "Alice's House e to = "Bob's House", cria:
