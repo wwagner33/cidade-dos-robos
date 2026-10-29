@@ -48,7 +48,7 @@ O sistema é organizado seguindo o padrão **MVC**, uma arquitetura que separa r
 ```
 **Função**: Recebe inputs do usuário, atualiza o Model e refresha a View.
 
-## **Como o MVC Funciona em Conjunto:**
+## **Como o MVC Funciona Juntos:**
 
 ```
 USUÁRIO interage com a View (clica botões)
@@ -220,78 +220,8 @@ if (encomendas.length === 0) {
 
 ## Estados da Simulação
 
-```mermaid
-stateDiagram-v2
-    [*] --> PRONTA
-    PRONTA --> EXECUTANDO : startSimulation()
-    EXECUTANDO --> PAUSADA : stopSimulation()
-    PAUSADA --> EXECUTANDO : startSimulation()
-    EXECUTANDO --> FINALIZADA : Todas as encomendas\nentregues
-    FINALIZADA --> PRONTA : resetSimulation()
-    PAUSADA --> PRONTA : resetSimulation()
-    EXECUTANDO --> PRONTA : resetSimulation()
-
-    state PRONTA {
-        [*] --> Aguardando
-        Aguardando : Estado inicial
-        Aguardando : Robô parado
-        Aguardando : Encomendas pendentes
-        Aguardando : Resetável
-    }
-
-    state EXECUTANDO {
-        [*] --> Processando
-        Processando : Robô em movimento
-        Processando : Loop ativo
-        Processando : Contador ativo
-        Processando : Ativa
-    }
-
-    state PAUSADA {
-        [*] --> Pausa
-        Pausa : Simulação parada
-        Pausa : Estado preservado
-        Pausa : Pode continuar
-        Pausa : ⏸Parável
-    }
-
-    state FINALIZADA {
-        [*] --> Concluído
-        Concluído : Todas as entregas feitas
-        Concluído : Mensagem de sucesso
-        Concluído : Estatísticas finais
-        Concluído : Apenas Reset
-    }
 ```
-
-### Legenda dos Estados
-
-#### **PRONTA (Estado Inicial)**
-- **Situação**: Simulação carregada e parada
-- **Ações disponíveis**: Start, Reset
-- **Característica**: Resetável
-
-#### **EXECUTANDO (Estado Ativo)**
-- **Situação**: Loop de simulação rodando
-- **Ações disponíveis**: Stop, Reset
-- **Característica**: Ativa
-
-#### **PAUSADA (Estado Interrompido)**
-- **Situação**: Simulação parada temporariamente
-- **Ações disponíveis**: Continue, Reset
-- **Característica**: Parável
-
-#### **FINALIZADA (Estado de Conclusão)**
-- **Situação**: Todas encomendas entregues
-- **Ações disponíveis**: Apenas Reset
-- **Característica**: Apenas Reset
-
-## Transições entre Estados
-
-| De → Para | Gatilho | Condição |
-|-----------|---------|----------|
-| PRONTA → EXECUTANDO | `startSimulation()` | Usuário clica "Iniciar" |
-| EXECUTANDO → PAUSADA | `stopSimulation()` | Usuário para ou erro |
-| PAUSADA → EXECUTANDO | `startSimulation()` | Usuário continua |
-| EXECUTANDO → FINALIZADA | Condição automática | Encomendas == 0 |
-| QUALQUER → PRONTA | `resetSimulation()` | Usuário clica "Resetar" |
+PRONTA → EXECUTANDO → PAUSADA → FINALIZADA
+   ↓         ↓          ↓          ↓
+Resetável  Ativa    Parável   Apenas Reset
+```
