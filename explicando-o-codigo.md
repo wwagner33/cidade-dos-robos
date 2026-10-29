@@ -128,7 +128,7 @@ for(let [item1,item2] of a.split("-")){
 
 Como o último elemento "e", não possui um par separado por "-", a variável `item2` recebe o valor `undefined`.
 
-Agora, voltemos ao nosso grafo. Iremos usar a função `split("-")`,  divide a _string_ em substrings, usando o separador fornecido como parâmetro par a função, no caso, o **"-"**. Assim, por exemplo, a _string_ "Alice's House-Bob's House", vai ser dividida em duas _strings_, "Alice's House" e "Bob's House". O valor de saída da função `split()` é, portanto, um _array_ de _strings_ `["Alice's House", "Bob's House"]`. 
+Agora, voltemos ao nosso grafo. Iremos usar a função `split("-")`,  divide a _string_ em substrings, usando o separador fornecido como parâmetro para a função, no caso, o **"-"**. Assim, por exemplo, a _string_ "Alice's House-Bob's House", vai ser dividida em duas _strings_, "Alice's House" e "Bob's House". O valor de saída da função `split()` é, portanto, um _array_ de _strings_ `["Alice's House", "Bob's House"]`. 
 
 Já a função `map()` vai receber os valores de entrada da função e aplicar uma transformação, uma regra, para que seja criado um novo _array_ a partir desta regra. No nosso caso, a regra é dada pela função anônima `r => r.split("-")`, que pode ser expressa da seguinte forma:
 
