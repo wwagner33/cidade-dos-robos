@@ -226,7 +226,7 @@ stateDiagram-v2
     PRONTA --> EXECUTANDO : startSimulation()
     EXECUTANDO --> PAUSADA : stopSimulation()
     PAUSADA --> EXECUTANDO : startSimulation()
-    EXECUTANDO --> FINALIZADA : Todas encomendas\nentregues
+    EXECUTANDO --> FINALIZADA : Todas as encomendas\nentregues
     FINALIZADA --> PRONTA : resetSimulation()
     PAUSADA --> PRONTA : resetSimulation()
     EXECUTANDO --> PRONTA : resetSimulation()
