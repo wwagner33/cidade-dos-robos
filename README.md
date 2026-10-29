@@ -48,7 +48,7 @@ O sistema é organizado seguindo o padrão **MVC**, uma arquitetura que separa r
 ```
 **Função**: Recebe inputs do usuário, atualiza o Model e refresha a View.
 
-## **Como o MVC Funciona Juntos:**
+## **Como o MVC Funciona em Conjunto:**
 
 ```
 USUÁRIO interage com a View (clica botões)
