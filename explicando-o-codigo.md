@@ -1,6 +1,6 @@
 # Explicando o código do Simulador
 
-O mapea a cidade, com seus locais e estradas, como um Grafo, permitindo, assim, transformar o problema de deslocamento do robô em um problema de "Caixeiro Viajante", ou seja, de busca pela melhor rota para cumprir com o objetivo de entregar e coletar encomendas presentes nas localidades. 
+O código mapeia a cidade, com seus locais e estradas, como um Grafo, permitindo, assim, transformar o problema de deslocamento do robô em um problema de "Caixeiro Viajante", ou seja, de busca pela melhor rota para cumprir com o objetivo de entregar e coletar encomendas presentes nas localidades. 
 
 As estradas são mapeadas como **arestas** do grafo e as localidades são os **nós** ou **vértices** do grafo.
 
