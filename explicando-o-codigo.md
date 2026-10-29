@@ -6,7 +6,7 @@ As estradas são mapeadas como **arestas** do grafo e as localidades são os **n
 
 A aresta contém, neste caso, as informações relacionadas a quais **nós** está ligada, por isso, um par de informações é fornecido, "_local1-local2_", para definir a aresta. Já a localidade é definida por seu nome, por exemplo, "Alice's House" e por coordenadas do centro do nó, por exemplo, "_{x: 50, y: 100}_".
 
-A estrutura `roads` (ver código a seguir) é um vetor que permite criar as arestas do grafo. Já a estrutura `location` é um **objeto literal Javscript**, formado pela chave (_key_) "Nome da Localidade" e o valor (_value_)"Coordenadas da localidade", sendo este último o objeto literal contendo as coordenadas do **centro do _nó_** .
+A estrutura `roads` (ver código a seguir) é um vetor que permite criar as arestas do grafo. Já a estrutura `location` é um **objeto literal JavaScript**, formado pela chave (_key_) "Nome da Localidade" e o valor (_value_) "Coordenadas da localidade", sendo este último o objeto literal contendo as coordenadas do **centro do _nó_** .
 
 
 ## Entrada de Dados do Sistema
