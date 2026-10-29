@@ -138,7 +138,7 @@ function (r){
 }
 ```
 
-A saída da função `edges.map(r => r.split("-")))`, seria um _array_ e _arrays_, como mostrado a seguir.
+A saída da função `edges.map(r => r.split("-")))`, seria um _array_ de _arrays_, como mostrado a seguir.
 
 ```javascript
 [
