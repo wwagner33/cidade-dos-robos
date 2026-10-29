@@ -11,7 +11,7 @@ A estrutura `roads` (ver código a seguir) é um vetor que permite criar as ares
 
 ## Entrada de Dados do Sistema
 
-Os **dados de entrada** de nosso sistema são as estuturas que definem os nós e as arestas do grafo e que permitirão a criação do grafo, ou seja, a representação em memória das informações que devem se usadas no processamento da resposta do sistema.
+Os **dados de entrada** de nosso sistema são as estruturas que definem os nós e as arestas do grafo e que permitirão a criação do grafo, ou seja, a representação em memória das informações que devem ser usadas no processamento da resposta do sistema.
 
 As respostas para o problema tratado no sistema são as **rotas otimizadas para entrega e recebimento** das encomendas.
 
