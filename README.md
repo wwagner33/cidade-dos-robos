@@ -256,11 +256,11 @@ stateDiagram-v2
     }
 
     state FINALIZADA {
-        [*] --> Concluido
-        Concluido : Todas entregas feitas
-        Concluido : Mensagem de sucesso
-        Concluido : Estatísticas finais
-        Concluido : Apenas Reset
+        [*] --> Concluído
+        Concluído : Todas as entregas feitas
+        Concluído : Mensagem de sucesso
+        Concluído : Estatísticas finais
+        Concluído : Apenas Reset
     }
 ```
 
