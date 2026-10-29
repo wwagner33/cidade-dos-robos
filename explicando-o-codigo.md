@@ -103,7 +103,7 @@ Veja que a saída é, exatamente, o que se queria, ou seja, o valor de cada elem
 
 Porém, se tivermos um vetor de _strings_ do tipo `["a-b","c-d","e"]`, e quiséssemos separar os elementos unidos por "_-_", o que deveríamos fazer? Neste caso, podemos fazer a separação dos elementos usando a função `split()`passando como parêmetro o separador "_-_", que estamos usando. 
 
-Como essa função devolve um _array_ de _strings_, podemos separar os elementos do _array_, usando uma operação chamada **Desconstrução de _Array_ (_Array Desconstructing_)**. que permite separar os elementos de um _array_ em uma ou mais variáveis. Por exemplo:
+Como essa função devolve um _array_ de _strings_, podemos separar os elementos do _array_, usando uma operação chamada **Desconstrução de _Array_ (_Array Destructuring_)**, que permite separar os elementos de um _array_ em uma ou mais variáveis. Por exemplo:
 
 ```javascript
 let a,b;
